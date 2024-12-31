@@ -12,18 +12,18 @@ const formatMessage = (data) => {
     const economy = item.Cabin.Economy;
     const business = item.Cabin.Business;
 
-    message += `${item.OriginAirport} 🛫 ${item.DestinationAirport} \n \n`;
-    message += `Cia: ${economy.Airlines || business.Airlines} \n`;
-    message += `Data: ${item.Date} \n`;
+    message += `${item.OriginAirport} 🛫 ${item.DestinationAirport}\\n`; // Use '\\n' para quebra de linha JSON
+    message += `Cia: ${economy.Airlines || business.Airlines}\\n`;
+    message += `Data: ${item.Date}\\n`;
     if (economy.MileageCost) {
-      message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()} \n`;
+      message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()}\\n`;
     }
     if (business.MileageCost) {
-      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS) \n \n \n`;
+      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)\\n`;
     }
 
     return message;
-  }, '');
+  }, '').trim(); // Remove espaços em branco no final
 };
 
 // Helper para filtrar dados
