@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "apis": [
+    {
+      "identifier": "seatsaero",
+      "source": "@seatsaero/v1.0#cr81llxus6yfu",
+      "integrity": "sha512-r15eMHTRwlO7+HMuuqXYSg/6oJ9JP+p5SiLhxRjvasEg03jkDFwFycHaXAcKIVZw9ZS03h0ptaRJCQmtJg4LAg==",
+      "installerVersion": "6.1.2"
+    }
+  ]
+}

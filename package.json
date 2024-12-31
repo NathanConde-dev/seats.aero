@@ -1,16 +1,17 @@
 {
     "name": "seats.aero",
     "version": "1.0.0",
-    "description": "Aplicação para comunicação com a API do seats.aero",
+    "description": "Aplicação para pesquisa no cache do Seats Aero",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js"
+      "start": "node server.js"
     },
     "dependencies": {
-        "axios": "^1.5.0",
-        "dotenv": "^16.4.7",
-        "express": "^4.18.2"
+      "dotenv": "^10.0.0",
+      "express": "^4.18.2",
+      "@seatsaero/v1.0#cr81llxus6yfu": "latest"
     },
-    "author": "Nathan Condé",
+    "author": "Seu Nome",
     "license": "ISC"
-}
+  }
+  
