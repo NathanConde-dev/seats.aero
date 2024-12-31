@@ -8,16 +8,22 @@ app.use(express.json());
 
 // Helper para formatar a mensagem
 const formatMessage = (data) => {
-  return data.map(item => {
+  return data.reduce((message, item) => {
     const economy = item.Cabin.Economy;
     const business = item.Cabin.Business;
 
-    return (
-      `${item.OriginAirport} 🛫 ${item.DestinationAirport} | Cia: ${economy.Airlines || business.Airlines} | Data: ${item.Date}` +
-      (economy.MileageCost ? ` | ⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()}` : '') +
-      (business.MileageCost ? ` | ⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)` : '')
-    );
-  });
+    message += `${item.OriginAirport} 🛫 ${item.DestinationAirport}\n`;
+    message += `Cia: ${economy.Airlines || business.Airlines}\n`;
+    message += `Data: ${item.Date}\n`;
+    if (economy.MileageCost) {
+      message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()}\n`;
+    }
+    if (business.MileageCost) {
+      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)\n`;
+    }
+
+    return message;
+  }, '');
 };
 
 // Helper para filtrar dados
@@ -73,7 +79,7 @@ app.post('/cached-search', async (req, res) => {
   try {
     const response = await axios.request(options);
     const filteredData = filterResponse(response.data.data);
-    const textMessage = formatMessage(filteredData).join(' | ');
+    const textMessage = formatMessage(filteredData);
     return res.json({
       name,
       number,
