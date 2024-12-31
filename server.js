@@ -14,12 +14,12 @@ const formatMessage = (data) => {
 
     message += `${item.OriginAirport} 🛫 ${item.DestinationAirport}\\n`; // Use '\\n' para quebra de linha JSON
     message += `Cia: ${economy.Airlines || business.Airlines}\\n`;
-    message += `Data: ${item.Date}\\n`;
+    message += `Data: ${item.Date}\\n \\n`;
     if (economy.MileageCost) {
       message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()}\\n`;
     }
     if (business.MileageCost) {
-      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)\\n`;
+      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)\\n \\n \\n`;
     }
 
     return message;
