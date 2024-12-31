@@ -6,6 +6,50 @@ const app = express();
 
 app.use(express.json());
 
+// Helper para formatar a mensagem
+const formatMessage = (data) => {
+  return data.map(item => {
+    const economy = item.Cabin.Economy;
+    const business = item.Cabin.Business;
+
+    return (
+      `${item.OriginAirport}   🛫 ${item.DestinationAirport}
+` +
+      `Cia: ${economy.Airlines || business.Airlines}
+` +
+      `Data: ${item.Date}
+
+` +
+      `${economy.MileageCost ? `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()}
+` : ''}` +
+      `${business.MileageCost ? `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS)
+` : ''}`
+    );
+  }).join('\n\n');
+};
+
+// Helper para filtrar dados
+const filterResponse = (data) => {
+  return data.map(item => ({
+    OriginAirport: item.Route.OriginAirport,
+    DestinationAirport: item.Route.DestinationAirport,
+    Date: item.Date,
+    Cabin: {
+      Economy: {
+        MileageCost: item.YMileageCostRaw,
+        Taxes: item.YTotalTaxesRaw,
+        Airlines: item.YAirlines
+      },
+      Business: {
+        MileageCost: item.JMileageCostRaw,
+        Taxes: item.JTotalTaxesRaw,
+        Airlines: item.JAirlines
+      }
+    },
+    Source: item.Source
+  }));
+};
+
 // Endpoint para pesquisa no cache
 app.post('/cached-search', async (req, res) => {
   const {
@@ -34,7 +78,11 @@ app.post('/cached-search', async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    return res.json(response.data);
+    const filteredData = filterResponse(response.data.data);
+    const message = formatMessage(filteredData);
+    return res.json({
+      message
+    });
   } catch (error) {
     console.error('Erro ao buscar dados do cache:', error);
     const status = error.response ? error.response.status : 500;
