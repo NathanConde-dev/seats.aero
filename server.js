@@ -12,18 +12,18 @@ const formatMessage = (data) => {
     const economy = item.Cabin.Economy;
     const business = item.Cabin.Business;
 
-    message += `${item.OriginAirport} 🛫 ${item.DestinationAirport} | `;
-    message += `Cia: ${economy.Airlines || business.Airlines} | `;
-    message += `Data: ${item.Date} | `;
+    message += `${item.OriginAirport} 🛫 ${item.DestinationAirport} \n \n`;
+    message += `Cia: ${economy.Airlines || business.Airlines} \n`;
+    message += `Data: ${item.Date} \n`;
     if (economy.MileageCost) {
-      message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()} | `;
+      message += `⭕️${economy.MileageCost} MILHAS ${item.Source.toUpperCase()} \n`;
     }
     if (business.MileageCost) {
-      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS) | `;
+      message += `⭕️${business.MileageCost} MILHAS ${item.Source.toUpperCase()} (BUSINESS) \n \n \n`;
     }
 
     return message;
-  }, '').slice(0, -3); // Remove o último separador " | "
+  }, '');
 };
 
 // Helper para filtrar dados
