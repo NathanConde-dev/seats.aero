@@ -4,14 +4,13 @@
     "description": "Aplicação para pesquisa no cache do Seats Aero",
     "main": "server.js",
     "scripts": {
-      "start": "node server.js"
+        "start": "node server.js"
     },
     "dependencies": {
-      "dotenv": "^10.0.0",
-      "express": "^4.18.2",
-      "@seatsaero/v1.0#cr81llxus6yfu": "latest"
+        "axios": "^1.7.9",
+        "dotenv": "^10.0.0",
+        "express": "^4.18.2"
     },
     "author": "Seu Nome",
     "license": "ISC"
-  }
-  
+}

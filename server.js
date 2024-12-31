@@ -1,12 +1,10 @@
+// server.js
 require('dotenv').config();
 const express = require('express');
-const seatsaero = require('@seatsaero/v1.0#cr81llxus6yfu');
-
+const axios = require('axios');
 const app = express();
-app.use(express.json());
 
-// Configure a autenticação
-seatsaero.auth(process.env.SEATS_API_KEY);
+app.use(express.json());
 
 // Endpoint para pesquisa no cache
 app.post('/cached-search', async (req, res) => {
@@ -16,10 +14,8 @@ app.post('/cached-search', async (req, res) => {
     cabin,
     start_date,
     end_date,
-    cursor,
     take,
-    order_by,
-    skip,
+    order_by
   } = req.body;
 
   // Validar campos obrigatórios
@@ -27,24 +23,22 @@ app.post('/cached-search', async (req, res) => {
     return res.status(400).json({ error: 'Campos obrigatórios: origin_airport, destination_airport' });
   }
 
-  try {
-    const { data } = await seatsaero.cachedSearch({
-      origin_airport,
-      destination_airport,
-      cabin,
-      start_date,
-      end_date,
-      cursor,
-      take: take || 500,
-      order_by: order_by || 'departure_date',
-      skip: skip || 0,
-    });
+  const options = {
+    method: 'GET',
+    url: `https://seats.aero/partnerapi/search?origin_airport=${origin_airport}&destination_airport=${destination_airport}&cabin=${encodeURIComponent(cabin || '[economy, premium, business, first]')}&start_date=${start_date}&end_date=${end_date}&take=${take || 10}&order_by=${order_by || 'lowest_mileage'}`,
+    headers: {
+      accept: 'application/json',
+      'Partner-Authorization': process.env.SEATS_API_KEY,
+    },
+  };
 
-    return res.json(data);
-  } catch (err) {
-    console.error('Erro ao buscar dados do cache:', err);
-    const status = err.response ? err.response.status : 500;
-    const message = err.response ? err.response.data : 'Erro desconhecido';
+  try {
+    const response = await axios.request(options);
+    return res.json(response.data);
+  } catch (error) {
+    console.error('Erro ao buscar dados do cache:', error);
+    const status = error.response ? error.response.status : 500;
+    const message = error.response ? error.response.data : 'Erro desconhecido';
     return res.status(status).json({ error: message });
   }
 });
