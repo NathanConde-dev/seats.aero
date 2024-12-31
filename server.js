@@ -53,6 +53,8 @@ const filterResponse = (data) => {
 // Endpoint para pesquisa no cache
 app.post('/cached-search', async (req, res) => {
   const {
+    name,
+    number,
     origin_airport,
     destination_airport,
     cabin,
@@ -79,9 +81,11 @@ app.post('/cached-search', async (req, res) => {
   try {
     const response = await axios.request(options);
     const filteredData = filterResponse(response.data.data);
-    const message = formatMessage(filteredData);
+    const textMessage = formatMessage(filteredData);
     return res.json({
-      message
+      name,
+      number,
+      textMessage
     });
   } catch (error) {
     console.error('Erro ao buscar dados do cache:', error);
