@@ -13,7 +13,7 @@ const formatMessage = (data) => {
     const business = item.Cabin.Business;
 
     return (
-      `${item.OriginAirport}   🛫 ${item.DestinationAirport}
+      `${item.OriginAirport} 🛫 ${item.DestinationAirport}
 ` +
       `Cia: ${economy.Airlines || business.Airlines}
 ` +
